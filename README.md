@@ -110,7 +110,7 @@ Start the computation with:
 ./files/samples/localhost_runner.sh
 ```
 
-## CHANGES
+## Changes
 I had to undertake significant changes to the project inorder to get parts of it to work (huge shout out to the TA's of the PET+P course).
 Here I will list the most significant and the resoning for the changes:
 
@@ -120,3 +120,54 @@ The Makefile as such did not work. We had to change so many things in it that I'
 2. Training Data
 The python scripts provided for the download and creation of the MNIST and CIFAR10 datasets did not work in SciCORE. Instead I created the MNIST on a local machine and tranfered the already prepared data to scicore. 
 Intresstingly, eventhough the code to CIFAR10 is idendical, my private machine was unable to successfully execute the code as it could not find the directories I created for it, eventhough the file path was correct.
+
+## PROJECT
+I've analysed the code and identified several aspects and parameters I'd like to investigate.
+
+### Parameters
+**Bold Parameters** are of especially great intrest.
+
+In the config files we can change these parameters:
+* (num_parties)
+    Should be set to match the specific MPC protocol used
+* party_ips
+* **network**
+    Neural network that should be trained
+* custom_epochs(_count)
+* custom_itirations(_count)
+* custom_batch_size(_count)
+* (preload(_path))
+    Allows for the preloading of a neural network. Probably won't be used in my project.
+
+In the build command we can further change these parameters
+* **Fixed Point Precision**
+    Number of bits used for precision
+* **Protocol Used**
+    MPC protocol used
+
+By adjusting these boolean parameters in the config files we can change what output we want:
+* eval_accuracy
+* eval_inference_stats
+* eval_train_stats (includes time)
+* eval_fw_peak_memory
+* eval_bw_peak_memory
+* eval_epoch_stats
+
+### Projecz Questions
+The following are the questions I'd like to investigate. They allow me to compare my results with the orignial paper while hopefully allowing me to find some of my own insight.
+
+Can we reproduce the results from Figure 5 (Fixed Point Precision - Accuracy graph)?
+Does the number of bits used for Fixed Point Precision impact runtime or memory usage?
+How does memory usage vary from one NN model - MPC protocol pair to the others?
+Can we reporduce the results from Table 2 (Comparing diffrent NN and MPC protocol combinations)?
+
+### Runs
+//LIST ALL RUN CONFIG NAMES HERE
+
+### Evaluation 
+Each single test should be preformed atleast three times.
+All the data produced will be saved to a excel table together with the name of the config file and important parameter settings it was produced under. 
+Any graphs will show the median value and show the deviations of other values. This should help us when analysing the data. 
+
+### Analysis
+//DO ANALYSIS HERE
