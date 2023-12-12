@@ -5,12 +5,12 @@
     <img src="https://github.com/ucbrise/piranha/blob/main/files/piranha-fish.png?raw=true" alt="cute cuddly PIRANHA >:D courtesy of Vivian Fang @ vivi.sh" width=20% height=20%/>
 </p>
 
-Piranha is a C++-based platform for accelerating secure multi-party computation (MPC) protocols on the GPU in a protocol-independent manner. It is designed both for MPC developers, providing a modular structure for easily adding new protocol implementations, and secure application developers, allowing execution on any Piranha-implemented protocols. This repo currently includes a secure ML inference and training application, which you can find in `/nn`.
+Piranha is a C++-based platform for accelerating secure multi-party computation (MPC) protocols on the GPU in a protocol-independent manner. It is designed both for MPC developers, providing a modular structure for easily adding new protocol implementations, and secure application developers, allowing execution on any Piranha-implemented protocols.
 
 Piranha is described in more detail in our [USENIX Security '22 paper](https://eprint.iacr.org/2022/892)! If you have questions, please create git issues; for eventual replies, you can also reach out to `jlw@berkeley.edu`.
 
 > [!IMPORTANT]
-> As part of the 2023 PET+P lecutre of the University of Basel, this repository has been modified to work with [SciCORE](https://scicore.unibas.ch/). The setup process is diffrent than in the [original repo for Piranha](https://github.com/ucbrise/piranha).
+> As part of the 2023 PET+P lecutre of the University of Basel, this repository has been modified to work with [SciCORE](https://scicore.unibas.ch/). The setup process is diffrent compared in the [original repo for Piranha](https://github.com/ucbrise/piranha).
 
 ## SETUP AND BUILD
 
@@ -161,10 +161,10 @@ By adjusting these boolean parameters in the config files we can change what out
 ### Project Questions
 The following are the questions I'd like to investigate. They allow me to compare my results with the orignial paper while hopefully allowing me to find some of my own insight.
 
-Can we reproduce the results from Figure 5 (Fixed Point Precision - Accuracy graph)?
-Does the number of bits used for Fixed Point Precision impact runtime or memory usage?
-How does memory usage vary from one NN model - MPC protocol pair to the others?
-Can we reporduce the results from Table 2 (Comparing diffrent NN and MPC protocol combinations)?
+* Can we reproduce the results from Figure 5 (Fixed Point Precision - Accuracy graph)?
+* Does the number of bits used for Fixed Point Precision impact runtime or memory usage?
+* How does memory usage vary from one NN model - MPC protocol pair to the others?
+* Can we reporduce the results from Table 2 (Comparing diffrent NN and MPC protocol combinations)?
 
 ### Runs
 //LIST ALL RUN CONFIG NAMES HERE

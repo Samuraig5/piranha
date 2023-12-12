@@ -58,13 +58,13 @@ train_images = np.transpose(train_images, [0, 3, 2, 1])
 print(train_images.shape)
 print(one_hot(train_labels).shape)
 
-save_to_file(train_images, "CIFAR10/train_data")
-save_to_file(one_hot(train_labels), "CIFAR10/train_labels")
+save_to_file(train_images, "CIFAR10data/train_data")
+save_to_file(one_hot(train_labels), "CIFAR10data/train_labels")
 
 test_images = np.transpose(test_images, [0, 3, 2, 1])
 print(test_images.shape)
 print(one_hot(test_labels).shape)
 
-save_to_file(test_images, "CIFAR10/test_data")
-save_to_file(one_hot(test_labels), "CIFAR10/test_labels")
+save_to_file(test_images, "CIFAR10data/test_data")
+save_to_file(one_hot(test_labels), "CIFAR10data/test_labels")
 
