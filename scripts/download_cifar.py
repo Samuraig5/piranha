@@ -44,7 +44,7 @@ def one_hot(labels):
 
 TARGET_DATASET = datasets.CIFAR10
 BATCH_SIZE = 128
-path = "../files/CIFAR10/"
+path = "CIFAR10/"
 
 train_loader = DataLoader(TARGET_DATASET("./", train=True, transform=transforms.ToTensor(), download=True), batch_size=BATCH_SIZE, shuffle=False, drop_last=True)
 test_loader = DataLoader(TARGET_DATASET("./", train=False, transform=transforms.ToTensor(), download=True), batch_size=BATCH_SIZE, shuffle=False, drop_last=True)
@@ -58,13 +58,13 @@ train_images = np.transpose(train_images, [0, 3, 2, 1])
 print(train_images.shape)
 print(one_hot(train_labels).shape)
 
-save_to_file(train_images, path+"train_data")
-save_to_file(one_hot(train_labels), path+"train_labels")
+save_to_file(train_images, "CIFAR10/train_data")
+save_to_file(one_hot(train_labels), "CIFAR10/train_labels")
 
 test_images = np.transpose(test_images, [0, 3, 2, 1])
 print(test_images.shape)
 print(one_hot(test_labels).shape)
 
-save_to_file(test_images, path+"test_data")
-save_to_file(one_hot(test_labels), path+"test_labels")
+save_to_file(test_images, "CIFAR10/test_data")
+save_to_file(one_hot(test_labels), "CIFAR10/test_labels")
 
