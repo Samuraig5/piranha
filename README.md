@@ -153,7 +153,7 @@ By adjusting these boolean parameters in the config files we can change what out
 * eval_bw_peak_memory
 * eval_epoch_stats
 
-### Projecz Questions
+### Project Questions
 The following are the questions I'd like to investigate. They allow me to compare my results with the orignial paper while hopefully allowing me to find some of my own insight.
 
 Can we reproduce the results from Figure 5 (Fixed Point Precision - Accuracy graph)?
