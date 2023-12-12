@@ -9,25 +9,26 @@ Piranha is a C++-based platform for accelerating secure multi-party computation 
 
 Piranha is described in more detail in our [USENIX Security '22 paper](https://eprint.iacr.org/2022/892)! If you have questions, please create git issues; for eventual replies, you can also reach out to `jlw@berkeley.edu`.
 
-As part of the 2023 PET+P lecutre of the University of Basel, this repository has been modified to work with [SciCORE](https://scicore.unibas.ch/). The setup process is diffrent than in the [original repo for Piranha](https://github.com/ucbrise/piranha).
+> [!IMPORTANT]
+> As part of the 2023 PET+P lecutre of the University of Basel, this repository has been modified to work with [SciCORE](https://scicore.unibas.ch/). The setup process is diffrent than in the [original repo for Piranha](https://github.com/ucbrise/piranha).
 
 ## SETUP AND BUILD
 
 ### SETTING UP THE PROJECT
-1. REMOTE INTO SCICORE
+**1. REMOTE INTO SCICORE**
 Remote into [SciCORE](https://scicore.unibas.ch/) with your login.
 
-2. CLONE THE REPOSITORY
+**2. CLONE THE REPOSITORY**
 ```
 git clone https://github.com/Samuraig5/piranha
 ```
 
-3. ENTER THE REPO
+**3. ENTER THE REPO**
 ```
 cd piranha
 ```
 
-4. CHECKOUT EXTERNAL MODULES
+**4. CHECKOUT EXTERNAL MODULES**
 ```
 git submodule update --init --recursive
 ```
@@ -35,17 +36,17 @@ git submodule update --init --recursive
 ---------------------------------------------------------------------------------------------
 
 ### BUILD CUTLASS
-1. LOAD CMAKE
+**1. LOAD CMAKE**
 ```
 ml load CMake
 ```
 
-2. LOAD CUDA
+**2. LOAD CUDA**
 ```
 ml load CUDA/12.3.1 
 ```
 
-3. BUILD CUTLASS
+**3. BUILD CUTLASS**
 ```
 cd ext/cutlass
 mkdir build && cd build
@@ -53,23 +54,25 @@ cmake .. -DCUTLASS_NVCC_ARCHS=<YOUR_GPU_ARCH_HERE> -DCMAKE_CUDA_COMPILER_WORKS=1
 make -j
 ```
 
-> [!NOTE]
+>**NOTE:**
+>
 > The nvcc arch for the a100 GPU's I used was '80'. 
-> The nvcc path does not necessarily need to be specified.
-
+>
+>The nvcc path does not necessarily need to be specified.
+>
 >For me this command worked:
 >```
 >cmake .. -DCUTLASS_NVCC_ARCHS=80 -DCMAKE_CUDA_COMPILER_WORKS=1
 >```
 
-4. RETURN TO THE ROOT PIRANHA FOLDER
+**4. RETURN TO THE ROOT PIRANHA FOLDER**
 ```
 cd ../../..
 ```
 
 ---------------------------------------------------------------------------------------------
 ### BUILD PIRANHA
-1. MAKE PIRANHA
+**1. MAKE PIRANHA**
 ```
 make -j8 PIRANHA_FLAGS="-DFLOAT_PRECISION=<BITS_OF_PRECISION> -D<PROTOCOL_CODE>"
 ```
@@ -88,7 +91,7 @@ and example for such a make command is
 make -j8 PIRANHA_FLAGS="-DFLOAT_PRECISION=26 -DTWOPC"
 ```
 
-2. RUN PIRANHA
+**2. RUN PIRANHA**
 ```
 ./piranha -p <PARTY NUM> -c <CONFIG FILE>
 ```
@@ -114,10 +117,12 @@ Start the computation with:
 I had to undertake significant changes to the project inorder to get parts of it to work (huge shout out to the TA's of the PET+P course).
 Here I will list the most significant and the resoning for the changes:
 
-1. Makefile
+**1. Makefile**
+
 The Makefile as such did not work. We had to change so many things in it that I've lost track of every detail. In broad strokes we changed how the GTest library was included, the currently used CUDA library and the path to the nvcc installation as it is not the same as in usual installations. 
 
-2. Training Data
+**2. Training Data**
+
 The python scripts provided for the download and creation of the MNIST and CIFAR10 datasets did not work in SciCORE. Instead I created the MNIST on a local machine and tranfered the already prepared data to scicore. 
 Intresstingly, eventhough the code to CIFAR10 is idendical, my private machine was unable to successfully execute the code as it could not find the directories I created for it, eventhough the file path was correct.
 
