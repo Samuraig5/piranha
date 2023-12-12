@@ -8,6 +8,7 @@ piranha-debug
 *.ipynb_checkpoints
 tags
 */MNIST/*
+*/MNIST.rar
 */CIFAR10/*
 output/
 output/*

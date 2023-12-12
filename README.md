@@ -1,5 +1,5 @@
 
-# Piranha: A GPU Platform for Secure Computation
+# Piranha: A GPU Platform for Secure Computation (on SciCORE)
 
 <p align="center">
     <img src="https://github.com/ucbrise/piranha/blob/main/files/piranha-fish.png?raw=true" alt="cute cuddly PIRANHA >:D courtesy of Vivian Fang @ vivi.sh" width=20% height=20%/>
@@ -9,15 +9,7 @@ Piranha is a C++-based platform for accelerating secure multi-party computation 
 
 Piranha is described in more detail in our [USENIX Security '22 paper](https://eprint.iacr.org/2022/892)! If you have questions, please create git issues; for eventual replies, you can also reach out to `jlw@berkeley.edu`.
 
-<p align="center">
-    <img src="https://github.com/ucbrise/piranha/blob/main/files/images/usenixbadges-available.png?raw=true" alt="usenix-available" width=10% height=10%/>
-    <img src="https://github.com/ucbrise/piranha/blob/main/files/images/usenixbadges-functional.png?raw=true" alt="usenix-functional" width=10% height=10%/>
-    <img src="https://github.com/ucbrise/piranha/blob/main/files/images/usenixbadges-reproduced.png?raw=true" alt="usenix-reproduced" width=10% height=10%/>
-</p>
-
-**Warning**: This is an academic proof-of-concept prototype and has not received careful code review. This implementation is NOT ready for production use.
-
-**Warning**: This repository has been modified to work with SciCORE. The setup process is diffrent than in the original [repo](https://github.com/ucbrise/piranha).
+As part of the 2023 PET+P lecutre of the University of Basel, this repository has been modified to work with [SciCORE](https://scicore.unibas.ch/). The setup process is diffrent than in the [original repo for Piranha](https://github.com/ucbrise/piranha).
 
 ## SETUP AND BUILD
 
@@ -126,24 +118,5 @@ Here I will list the most significant and the resoning for the changes:
 The Makefile as such did not work. We had to change so many things in it that I've lost track of every detail. In broad strokes we changed how the GTest library was included, the currently used CUDA library and the path to the nvcc installation as it is not the same as in usual installations. 
 
 2. Training Data
-The python scripts provided for the download and creation of the MNIST and CIFAR10 datasets did not work in SciCORE. Instead I created them on a local machine and tranfered the alreay prepared data to scicore.
-
-
-## Citation
-
-You can cite the original paper using the following BibTeX entry (the paper links to this repo):
-
-```
-@inproceedings {watson22piranha,
-    author = {Watson, Jean-Luc and Wagh, Sameer and Popa, Raluca Ada},
-    title = {Piranha: A {GPU} Platform for Secure Computation},
-    booktitle = {31st USENIX Security Symposium (USENIX Security 22)},
-    year = {2022},
-    isbn = {978-1-939133-31-1},
-    address = {Boston, MA},
-    pages = {827--844},
-    url = {https://www.usenix.org/conference/usenixsecurity22/presentation/watson},
-    publisher = {USENIX Association},
-    month = aug,
-}
-```
+The python scripts provided for the download and creation of the MNIST and CIFAR10 datasets did not work in SciCORE. Instead I created the MNIST on a local machine and tranfered the already prepared data to scicore. 
+Intresstingly, eventhough the code to CIFAR10 is idendical, my private machine was unable to successfully execute the code as it could not find the directories I created for it, eventhough the file path was correct.
