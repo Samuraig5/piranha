@@ -1,5 +1,4 @@
 BINARY=piranha
-ranha_OLD_NOBACKUPBINARY=piranha
 DEBUG_BINARY=piranha-debug
 BUILD_DIR=build
 DEBUG_DIR=debug
