@@ -17,69 +17,100 @@ Piranha is described in more detail in our [USENIX Security '22 paper](https://e
 
 **Warning**: This is an academic proof-of-concept prototype and has not received careful code review. This implementation is NOT ready for production use.
 
-## Build
+**Warning**: This repository has been modified to work with SciCORE. The setup process is diffrent than in the original [repo](https://github.com/ucbrise/piranha).
 
-This project requires an NVIDIA GPU, and assumes you have your GPU drivers and the [NVIDIA CUDA Toolkit](https://docs.nvidia.com/cuda/) already installed. The following has been tested on AWS with the `Deep Learning Base AMI (Ubuntu 18.04 ) Version 53.5` AMI.
+## SETUP AND BUILD
 
-1. Checkout external modules
+### SETTING UP THE PROJECT
+1. REMOTE INTO SCICORE
+Remote into [SciCORE](https://scicore.unibas.ch/) with your login.
+
+2. CLONE THE REPOSITORY
+```
+git clone https://github.com/Samuraig5/piranha
+```
+
+3. ENTER THE REPO
+```
+cd piranha
+```
+
+4. CHECKOUT EXTERNAL MODULES
 ```
 git submodule update --init --recursive
 ```
 
-1. Build CUTLASS
+---------------------------------------------------------------------------------------------
 
+### BUILD CUTLASS
+1. LOAD CMAKE
+```
+ml load CMake
+```
+
+2. LOAD CUDA
+```
+ml load CUDA/12.3.1 
+```
+
+3. BUILD CUTLASS
 ```
 cd ext/cutlass
-mkdir build
+mkdir build && cd build
 cmake .. -DCUTLASS_NVCC_ARCHS=<YOUR_GPU_ARCH_HERE> -DCMAKE_CUDA_COMPILER_WORKS=1 -DCMAKE_CUDA_COMPILER=<YOUR NVCC PATH HERE>
 make -j
 ```
 
-1. Install GTest. We use it for unit testing.
+**NOTE**
+The nvcc arch for the a100 GPU's I used was '80'. 
+The nvcc path does not necessarily need to be specified.
 
+For me this command worked:
 ```
-sudo apt install libgtest-dev libssl-dev
-cd /usr/src/gtest
-sudo mkdir build
-cd build
-sudo cmake ..
-sudo make
-sudo make install
+cmake .. -DCUTLASS_NVCC_ARCHS=80 -DCMAKE_CUDA_COMPILER_WORKS=1
 ```
 
-2. Create some necessary directories
-
+4. RETURN TO THE ROOT PIRANHA FOLDER
 ```
-mkdir output; mkdir files/MNIST; mkdir files/CIFAR10
-```
-
-3. Download the MNIST/CIFAR10 datasets, if using. This step might take a while
-
-```
-cd scripts
-sudo pip install torch torchvision
-python download_{mnist, cifar10}.py
+cd ../../..
 ```
 
-4. Build Piranha at a specific fixed point precision and for a particular protocol. 3-party replicated secret sharing is the default and doesn't require a command-line flag.
+---------------------------------------------------------------------------------------------
+### BUILD PIRANHA
+1. MAKE PIRANHA
+```
+make -j8 PIRANHA_FLAGS="-DFLOAT_PRECISION=<BITS_OF_PRECISION> -D<PROTOCOL_CODE>"
+```
+
+The exact form of this command will depend on your usage and the test you want to run. These are the protocol codes:
+
+Protocol Codes:
+ONEPC -> one party
+TWOPC -> two parties (SecureML)
+FOURPC -> four parties (fantastic four)
+none -> three parties (Falcon)
+
+and example for such a make command is
 
 ```
-make -j8 PIRANHA_FLAGS="-DFLOAT_PRECISION=<NBITS> -D{TWOPC,FOURPC}"
+make -j8 PIRANHA_FLAGS="-DFLOAT_PRECISION=26 -DTWOPC"
 ```
 
-## Run
-
-1. Copy and set up a run configuration using `config.json` as a base. It is already set up to perform a 10-epoch SecureML training run; simply specify party IPs in the configuration.
-
-2. Run Piranha on each machine with a party number (0 -> n_parties - 1):
-
+2. RUN PIRANHA
 ```
 ./piranha -p <PARTY NUM> -c <CONFIG FILE>
 ```
 
+Again, the exact form of this command will change from party to party and from test to test.
+Loosly speaking, you want to 
+
+Set up a run configuration using config.json as a base. 
+Run Piranha on each machine with a party number (0 -> n_parties - 1):
+
+
 ### Running locally
 
-You may want to run Piranha on a local machine for development. An example configuration for 3-party local execution can be found at `files/samples/localhost_config.json` with an accompanying runfile. You can modify the runfile to change which GPUs Piranha uses for each party using the `CUDA_VISIBLE_DEVICES` environment variable. The script uses GPUs 0-2 by default, but can be changed to run on a single GPU as well. Note that due to contention, hosting several parties on a single GPU will limit the problem sizes you can test and incur some additional overhead.
+In the SciCORE setting we want to run Piranha on a local machine. An example configuration for 3-party local execution can be found at `files/samples/localhost_config.json` accompanying runfile. You can modify the runfile to change which GPUs Piranha uses for each party using the `CUDA_VISIBLE_DEVICES` environment variable. The script uses GPUs 0-2 by default, but can be changed to run on a single GPU as well. Note that due to contention, hosting several parties on a single GPU will limit the problem sizes you can test and incur some additional overhead.
 
 Start the computation with:
 
@@ -87,9 +118,20 @@ Start the computation with:
 ./files/samples/localhost_runner.sh
 ```
 
+## CHANGES
+I had to undertake significant changes to the project inorder to get parts of it to work (huge shout out to the TA's of the PET+P course).
+Here I will list the most significant and the resoning for the changes:
+
+1. Makefile
+The Makefile as such did not work. We had to change so many things in it that I've lost track of every detail. In broad strokes we changed how the GTest library was included, the currently used CUDA library and the path to the nvcc installation as it is not the same as in usual installations. 
+
+2. Training Data
+The python scripts provided for the download and creation of the MNIST and CIFAR10 datasets did not work in SciCORE. Instead I created them on a local machine and tranfered the alreay prepared data to scicore.
+
+
 ## Citation
 
-You can cite the paper using the following BibTeX entry (the paper links to this repo):
+You can cite the original paper using the following BibTeX entry (the paper links to this repo):
 
 ```
 @inproceedings {watson22piranha,
@@ -105,37 +147,3 @@ You can cite the paper using the following BibTeX entry (the paper links to this
     month = aug,
 }
 ```
-
-## Artifact Evaluation
-
-For our experiments, we use a cluser of AWS GPU-provisioned machines. Reviewers should have credentials to access the environment, but due to resource limits, we can only support one reviewer evaluating at a time. You can run Piranha to regenerate Figures 4, 5, 6, and 7, as well as Tables 2, 3, and 4.
-
-Evaluation runs through `experiments/run_experiment.py`, which should be executed on the control instance we provide with the required dependencies. Here are the relevant options:
-
-```
-usage: run_experiment.py [-h] [--start] [--stop] [--figure FIGURE] [--table TABLE] [--generate] [--fast] [--verbose]
-
-Run artifact evaluation!
-
-optional arguments:
-  -h, --help       show this help message and exit
-  --start          Provision cluster for experiments. _Please suspend the cluster while not running experiments :)_
-  --stop           Suspend evaluation machines.
-  --figure FIGURE  Figure # to run.
-  --table TABLE    Table # to run.
-  --generate       Generate figure/table images.
-  --fast           Run all the (relatively) fast runs, see README for more information
-  --verbose        Display verbose run commands, helpful for debugging
-```
-
-* You can start and stop the cluster with `--start` and `--stop`, respectively. Please use these if you're not running evaluation! GPU instances are not cheap and cost about $450/day to keep running.
-
-* Use the `--figure` and `--table` flags to run data generation for each of the paper's figures/tables. They're fairly automatic and should run without intervention. 
-
-* Generate each figure/table with the `--generate` flag. You can run the evaluation script on partial results and the results will reflect those partial values. Figures generate `.png` files in `artifact_figures/artifact` while table replication generates JSON. You can compare to the paper figures/tables generated into `artifact_figures/paper` from hardcoded data.
-
-* **Very important note on timing.** Unfortunately, MPC still requires a significant amount of time (~30 hrs/training run) on a larger network like VGG16. A conservative estimate is that for Figure 5 alone, > 270 computation-hours are required to replicate the full figure. We've included a `--fast` flag if you'd like to replicate every other datapoint first (will still require a number of compute-hours), then come back to the VGG-based values.
-
-* Use `--verbose` if something isn't working and you want to take a look at the raw output or need an error message. In the backend, we use Ansible to communicate with each of the machines in the cluster.
-
-
