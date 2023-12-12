@@ -53,14 +53,14 @@ cmake .. -DCUTLASS_NVCC_ARCHS=<YOUR_GPU_ARCH_HERE> -DCMAKE_CUDA_COMPILER_WORKS=1
 make -j
 ```
 
-**NOTE**
-The nvcc arch for the a100 GPU's I used was '80'. 
-The nvcc path does not necessarily need to be specified.
+> [!NOTE]
+> The nvcc arch for the a100 GPU's I used was '80'. 
+> The nvcc path does not necessarily need to be specified.
 
-For me this command worked:
-```
-cmake .. -DCUTLASS_NVCC_ARCHS=80 -DCMAKE_CUDA_COMPILER_WORKS=1
-```
+>For me this command worked:
+>```
+>cmake .. -DCUTLASS_NVCC_ARCHS=80 -DCMAKE_CUDA_COMPILER_WORKS=1
+>```
 
 4. RETURN TO THE ROOT PIRANHA FOLDER
 ```
