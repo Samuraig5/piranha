@@ -123,6 +123,8 @@ Start the computation with:
 ```
 ./files/samples/localhost_runner.sh
 ```
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
 
 ## Changes
 I had to undertake significant changes to the project inorder to get parts of it to work (huge shout out to the TA's of the PET+P course).
@@ -139,6 +141,9 @@ The python scripts provided for the download and creation of the MNIST and CIFAR
 **3. GTest**
 
 Since GTest as a module was not availalbe on SciCORE we had to pull it from GitHUB and build it on SciCORE.
+
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
 
 
 ## PROJECT
@@ -173,6 +178,8 @@ By adjusting these boolean parameters in the config files we can change what out
 * eval_bw_peak_memory
 * eval_epoch_stats
 
+---------------------------------------------------------------------------------------------
+
 ### Project Questions
 The following are the questions I'd like to investigate. They allow me to compare my results with the orignial paper while hopefully allowing me to find some of my own insight.
 
@@ -180,6 +187,8 @@ The following are the questions I'd like to investigate. They allow me to compar
 * Does the number of bits used for Fixed Point Precision impact runtime or memory usage?
 * How does memory usage vary from one NN model - MPC protocol pair to the others?
 * Can we reporduce the results from Table 2 (Comparing diffrent NN and MPC protocol combinations)?
+
+---------------------------------------------------------------------------------------------
 
 ### Runs
 
@@ -231,10 +240,14 @@ Build Piranha with a fixed point precision of 12, 14, 16, 18, 20, 22, 24 and 26 
  ┃ ┃ ┗ 📜secureml_e10_if_b256_runner.sh
 ```
 
+---------------------------------------------------------------------------------------------
+
 ### Evaluation 
 Each single test should be preformed atleast three times.
 All the data produced will be saved to a excel table together with the name of the config file and important parameter settings it was produced under. 
 Any graphs will show the median value and show the deviations of other values. This should help us when analysing the data. 
+
+---------------------------------------------------------------------------------------------
 
 ### Analysis
 //DO ANALYSIS HERE
