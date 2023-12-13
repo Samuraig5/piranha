@@ -28,7 +28,14 @@ git clone https://github.com/Samuraig5/piranha
 cd piranha
 ```
 
-**4. CHECKOUT EXTERNAL MODULES**
+**4. FIND AND DECOMPRESS THE TRAINING DATA**
+```
+cd files
+tar -xvzf MNIST.tar.gz
+cd ..
+```
+
+**5. CHECKOUT EXTERNAL MODULES**
 ```
 git submodule update --init --recursive
 ```
@@ -124,7 +131,11 @@ The Makefile as such did not work. We had to change so many things in it that I'
 **2. Training Data**
 
 The python scripts provided for the download and creation of the MNIST and CIFAR10 datasets did not work in SciCORE. Instead I created the MNIST on a local machine and tranfered the already prepared data to scicore. 
-Intresstingly, eventhough the code to CIFAR10 is idendical, my private machine was unable to successfully execute the code as it could not find the directories I created for it, eventhough the file path was correct.
+
+**3. GTest**
+
+Since GTest as a module was not availalbe on SciCORE we had to pull it from GitHUB and build it on SciCORE.
+
 
 ## PROJECT
 I've analysed the code and identified several aspects and parameters I'd like to investigate.
@@ -133,22 +144,22 @@ I've analysed the code and identified several aspects and parameters I'd like to
 **Bold Parameters** are of especially great intrest.
 
 In the config files we can change these parameters:
-* (num_parties)
-    Should be set to match the specific MPC protocol used
+* *num_parties*
+    * Should be set to match the specific MPC protocol used
 * party_ips
 * **network**
-    Neural network that should be trained
+    * Neural network that should be trained
 * custom_epochs(_count)
 * custom_itirations(_count)
 * custom_batch_size(_count)
-* (preload(_path))
-    Allows for the preloading of a neural network. Probably won't be used in my project.
+* *preload(_path)*
+    * Allows for the preloading of a neural network. Probably won't be used in my project.
 
 In the build command we can further change these parameters
 * **Fixed Point Precision**
-    Number of bits used for precision
+    * Number of bits used for precision
 * **Protocol Used**
-    MPC protocol used
+    * MPC protocol used
 
 By adjusting these boolean parameters in the config files we can change what output we want:
 * eval_accuracy
