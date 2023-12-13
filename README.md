@@ -86,11 +86,15 @@ make -j8 PIRANHA_FLAGS="-DFLOAT_PRECISION=<BITS_OF_PRECISION> -D<PROTOCOL_CODE>"
 
 The exact form of this command will depend on your usage and the test you want to run. These are the protocol codes:
 
-Protocol Codes:
-ONEPC -> one party
-TWOPC -> two parties (SecureML)
-FOURPC -> four parties (fantastic four)
-none -> three parties (Falcon)
+>__Protocol Codes:__
+>
+>ONEPC -> one party
+>
+>TWOPC -> two parties (SecureML)
+>
+>FOURPC -> four parties (fantastic four)
+>
+>none -> three parties (Falcon)
 
 and example for such a make command is
 
@@ -178,7 +182,54 @@ The following are the questions I'd like to investigate. They allow me to compar
 * Can we reporduce the results from Table 2 (Comparing diffrent NN and MPC protocol combinations)?
 
 ### Runs
-//LIST ALL RUN CONFIG NAMES HERE
+
+The following is the file structure of the experiments:
+Each folder has a runner file which holds the instructions on how to run the experiment.
+
+I will briefly summarize here:
+
+#### Runtime Experiments:
+#### 26 bit precision 2,3,4 PC
+Build Piranha with a fixed point precision of 26 bits for two, three and four parties. Then run the respective runner file for each NN model, three times for the two party, the three party and the four party setup. 
+
+#### Memory Experiments:
+#### 26 bit precision 2,3,4 PC
+Build Piranha with a fixed point precision of 26 bits for two, three and four parties. Then run the respective runner file for each NN model, three times for the two party, the three party and the four party setup. 
+
+#### 12 bit precision 2,3,4 PC
+Build Piranha with a fixed point precision of 12 bits for two, three and four parties. Then run the respective runner file for each NN model, three times for the two party, the three party and the four party setup. 
+
+#### 12 - 26 bit precision 2 PC
+Build Piranha with a fixed point precision of 12, 14, 16, 18, 20, 22, 24 and 26 bits for two parties. Then run the respective runner file for each NN model, three times for each build. 
+
+> [!WARNING]
+> Be sure to edit the runner file to start the correct number of Piranha clients.
+
+```
+📦piranhaBuilds
+ ┣ 📂memoryExperiments
+ ┃ ┣ 📂lenet
+ ┃ ┃ ┣ 📜2pc_lenet_e10_if_b256_config.json
+ ┃ ┃ ┣ 📜3pc_lenet_e10_if_b256_config.json
+ ┃ ┃ ┣ 📜4pc_lenet_e10_if_b256_config.json
+ ┃ ┃ ┗ 📜lenet_e10_if_b256_runner.sh
+ ┃ ┗ 📂secureml
+ ┃ ┃ ┣ 📜2pc_secureml_e10_if_b256_config.json
+ ┃ ┃ ┣ 📜3pc_secureml_e10_if_b256_config.json
+ ┃ ┃ ┣ 📜4pc_secureml_e10_if_b256_config.json
+ ┃ ┃ ┗ 📜secureml_e10_if_b256_runner.sh
+ ┣ 📂runtimeExperiments
+ ┃ ┣ 📂lenet
+ ┃ ┃ ┣ 📜2pc_lenet_e10_if_b256_config.json
+ ┃ ┃ ┣ 📜3pc_lenet_e10_if_b256_config.json
+ ┃ ┃ ┣ 📜4pc_lenet_e10_if_b256_config.json
+ ┃ ┃ ┗ 📜lenet_e10_if_b256_runner.sh
+ ┃ ┗ 📂secureml
+ ┃ ┃ ┣ 📜2pc_secureml_e10_if_b256_config.json
+ ┃ ┃ ┣ 📜3pc_secureml_e10_if_b256_config.json
+ ┃ ┃ ┣ 📜4pc_secureml_e10_if_b256_config.json
+ ┃ ┃ ┗ 📜secureml_e10_if_b256_runner.sh
+```
 
 ### Evaluation 
 Each single test should be preformed atleast three times.
