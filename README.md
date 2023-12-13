@@ -45,12 +45,12 @@ git submodule update --init --recursive
 ### BUILD CUTLASS
 **1. LOAD CMAKE**
 ```
-ml load CMake
+ml load CMake/3.23.1-GCCcore-11.3.0
 ```
 
 **2. LOAD CUDA**
 ```
-ml load CUDA/12.3.1 
+ml load CUDA/11.8.0 
 ```
 
 **3. BUILD CUTLASS**
