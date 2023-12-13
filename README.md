@@ -193,9 +193,16 @@ The following are the questions I'd like to investigate. They allow me to compar
 ### Runs
 
 The following is the file structure of the experiments:
-Each folder has a runner file which holds the instructions on how to run the experiment.
+Each folder has three config files with the parameters and a runner file to launch the Piranha clients.
 
-I will briefly summarize here:
+Each file is named after its most important parameters:
+```
+<num_parties>_<NN_model>_<epoch_num>_<itiration_num>_<batch_size>_config.json
+```
+If a value was not set custom in the config file, it will carry an 'f' for false.
+
+The instruction for each experiment is written in the runer files.
+I will briefly summarize the experiments here:
 
 #### Runtime Experiments:
 #### 26 bit precision 2,3,4 PC
