@@ -11,8 +11,6 @@ tags
 */MNIST.rar
 */CIFAR10/*
 */CIFAR10.rar
-output/
-output/*
 debug/
 files/skynet_lan_ips
 files/skynet_wan_ips
