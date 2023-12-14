@@ -27,7 +27,7 @@
     "run_name": "runtimeExp_2pc_lenet_e10_if_b256_config",
 
     "_desc_network": "Path to NN architecture to use for the run",
-    "network": "files/models/lenet.json",
+    "network": "../../../files/models/lenet.json",
 
     "_desc_custom_epochs": "Enable custom number of epochs. Otherwise set by size of learning rate schedule",
     "custom_epochs": true,

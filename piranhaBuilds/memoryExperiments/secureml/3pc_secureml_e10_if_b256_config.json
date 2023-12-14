@@ -27,7 +27,7 @@
     "run_name": "memoryExp_3pc_secureml_e10_if_b256_config",
 
     "_desc_network": "Path to NN architecture to use for the run",
-    "network": "files/models/secureml.json",
+    "network": "../../../files/models/secureml.json",
 
     "_desc_custom_epochs": "Enable custom number of epochs. Otherwise set by size of learning rate schedule",
     "custom_epochs": true,
