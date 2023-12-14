@@ -150,18 +150,13 @@ Run Piranha on each machine with a party number (0 -> n_parties - 1):
 
 ### Running locally
 
-In the SciCORE setting we want to run Piranha on a local machine. An example configuration for 3-party local execution can be found at `files/samples/localhost_config.json` accompanying runfile. You can modify the runfile to change which GPUs Piranha uses for each party using the `CUDA_VISIBLE_DEVICES` environment variable. The script uses GPUs 0-2 by default, but can be changed to run on a single GPU as well. Note that due to contention, hosting several parties on a single GPU will limit the problem sizes you can test and incur some additional overhead.
+In the SciCORE setting we want to run Piranha on a local machine. An example configuration for 3-party local execution can be found at `files/samples/localhost_config.json` accompanying runfile but all configs and files in `piranhaBuilds` are also running locally. You can modify the runfiles to change which GPUs Piranha uses for each party using the `CUDA_VISIBLE_DEVICES` environment variable. Note that due to contention, hosting several parties on a single GPU will limit the problem sizes you can test and incur some additional overhead.
 
-Start the computation with:
-
-```
-./files/samples/localhost_runner.sh
-```
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
 
 ## Changes
-I had to undertake significant changes to the project inorder to get parts of it to work (huge shout out to the TA's of the PET+P course).
+I had to undertake significant changes to the project inorder to get parts of it to work (huge shout out to Osman of the PET+P course).
 Here I will list the most significant and the resoning for the changes:
 
 **1. Makefile**
@@ -170,11 +165,15 @@ The Makefile as such did not work. We had to change so many things in it that I'
 
 **2. Training Data**
 
-The python scripts provided for the download and creation of the MNIST and CIFAR10 datasets did not work in SciCORE. Instead I created the MNIST on a local machine and tranfered the already prepared data to scicore. 
+The python scripts provided for the download and creation of the MNIST and CIFAR10 datasets did not work in SciCORE. Instead I created the MNIST on a local machine and tranfered the already prepared data to SciCORE. If you want to use CIFAR10 you will have to build it locally with the scripts in `scripts` and then transfer them to SciCORE. For more details see the [original repo for Piranha](https://github.com/ucbrise/piranha).
 
 **3. GTest**
 
 Since GTest as a module was not availalbe on SciCORE we had to pull it from GitHUB and build it on SciCORE.
+
+**4. Building Piranha**
+
+Building Piranha was a significant challange and need a very specific but non-obvious chain of execution (hence the wierd build instructions). The other changes all come stem from this one problem that took a full week to work around.
 
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
@@ -227,7 +226,7 @@ The following are the questions I'd like to investigate. They allow me to compar
 ### Runs
 
 > [!NOTE]
-> Due to technical difficulties and slower than expected computation, I was unable to perform the tests and experiments as I wanted to. The concept (and files) are none the less useful in my opition and I will leave them here.
+> Due to technical difficulties building piranha and slower than expected computation, I was unable to perform the tests and experiments as I wanted to. The concept (and files) are none the less useful in my opition and I will leave them here.
 >To see the experiments I actually ran go the the next section called Anaysis.
 
 The following is the file structure of the experiments:
