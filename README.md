@@ -79,6 +79,7 @@ cd ../../..
 
 ---------------------------------------------------------------------------------------------
 ### BUILD PIRANHA
+
 Building Piranha is quite the hassle and requires a very specific series of operations:
 
 **1. PREPARE PROPPER MODULES**
