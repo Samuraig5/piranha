@@ -30,16 +30,16 @@
     "network": "../../../files/models/secureml.json",
 
     "_desc_custom_epochs": "Enable custom number of epochs. Otherwise set by size of learning rate schedule",
-    "custom_epochs": true,
+    "custom_epochs": false,
 
     "_desc_custom_epoch_count": "Number of epochs to train for, if custom_epochs is set",
-    "custom_epoch_count": 10,
+    "custom_epoch_count": 0,
 
     "_desc_custom_iterations": "Enable custom number of iterations. Otherwise set by training dataset size.",
-    "custom_iterations": false,
+    "custom_iterations": true,
 
     "_desc_custom_iteration_count": "Number of iterators to train per epoch, if custom_iterations is set",
-    "custom_iteration_count": 0,
+    "custom_iteration_count": 10,
 
     "_desc_custom_batch_size": "Enable custom batch size. Otherwise set by architecture configuration.",
     "custom_batch_size": true,
