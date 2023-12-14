@@ -20,7 +20,6 @@ scripts/*cifar-10*
 cifar-10-batches-py
 cifar-10-python.tar.gz
 CIFAR10
-*.png
 *.ipynb
 experiments/results/fig4
 experiments/results/fig5
@@ -32,3 +31,4 @@ experiments/results/table4
 experiments/runfiles/ip_piranha
 experiments/runfiles/ip_mpspdz
 experiments/runfiles/hosts.yml
+~$Piranha_Project_Data.xlsx

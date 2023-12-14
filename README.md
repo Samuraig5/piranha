@@ -79,7 +79,23 @@ cd ../../..
 
 ---------------------------------------------------------------------------------------------
 ### BUILD PIRANHA
-**1. MAKE PIRANHA**
+Building Piranha is quite the hassle and requires a very specific series of operations:
+
+**1. PREPARE PROPPER MODULES**
+```
+ml purge
+ml FFTW/3.3.9-gompi-2021a
+ml CUDA/11.8.0
+```
+
+
+**2. MAKE PIRANHA (1)**
+
+The following command will compile some of the files but not all. You will recieve some errors. Ignore these. 
+
+> [!WARNING]
+> DO NOT clean the make after running this command!
+
 ```
 make -j8 PIRANHA_FLAGS="-DFLOAT_PRECISION=<BITS_OF_PRECISION> -D<PROTOCOL_CODE>"
 ```
@@ -102,7 +118,18 @@ and example for such a make command is
 make -j8 PIRANHA_FLAGS="-DFLOAT_PRECISION=26 -DTWOPC"
 ```
 
-**2. RUN PIRANHA**
+**3. LOAD NEW MODULES**
+```
+ml purge
+ml CMake/3.23.1-GCCcore-11.3.0
+ml CUDA/11.8.0
+```
+
+**4. MAKE PIRANHA (2)**
+
+Now we can finish making Piranha. Use the exact same command you used in step 2. This time you should not see any errors and the binary file should be in the root folder of piranha.
+
+**5. RUN PIRANHA**
 ```
 ./piranha -p <PARTY NUM> -c <CONFIG FILE>
 ```
@@ -192,6 +219,10 @@ The following are the questions I'd like to investigate. They allow me to compar
 
 ### Runs
 
+> [!NOTE]
+> Due to technical difficulties and slower than expected computation, I was unable to perform the tests and experiments as I wanted to. The concept (and files) are none the less useful in my opition and I will leave them here.
+>To see the experiments I actually ran go the the next section called Anaysis.
+
 The following is the file structure of the experiments:
 Each folder has three config files with the parameters and a runner file to launch the Piranha clients.
 
@@ -219,7 +250,7 @@ Build Piranha with a fixed point precision of 12 bits for two, three and four pa
 Build Piranha with a fixed point precision of 12, 14, 16, 18, 20, 22, 24 and 26 bits for two parties. Then run the respective runner file for each NN model, three times for each build. 
 
 > [!WARNING]
-> Be sure to edit the runner file to start the correct number of Piranha clients.
+> The runnerfiles did not work for me but should be correct. If you want to use Piranha without the runnerfiles, the easiest way is to move your Piranha binary into the folder containing your chosen config and then running the command listed at the end of 'Build Piranha'. If you want to use the runnerfiles, be sure to edit the runner file to select the correct configuration for your need and MPC protocol.
 
 ```
 📦piranhaBuilds
@@ -250,11 +281,73 @@ Build Piranha with a fixed point precision of 12, 14, 16, 18, 20, 22, 24 and 26 
 ---------------------------------------------------------------------------------------------
 
 ### Evaluation 
-Each single test should be preformed atleast three times.
 All the data produced will be saved to a excel table together with the name of the config file and important parameter settings it was produced under. 
 Any graphs will show the median value and show the deviations of other values. This should help us when analysing the data. 
 
 ---------------------------------------------------------------------------------------------
 
 ### Analysis
-//DO ANALYSIS HERE
+
+#### **Runtime Experiments**
+In the runtime experiments I want to investigate the runtime behaviour of Piranha. What influences runtime and how does it tradeoff with accuracy? I want to get a feel for the general behaviour so we would be able to select the proper parameters depending on our time and accuracy requirements.
+
+1. What SciCORE Instance to use
+
+Since I didn't know how many SciCORE OnDemand resources I should reserve I performed a quick test. I locally trained a SecureML NN model with a 2PC MPC protocol on a 'Medium' instance (14 core, 90GB RAM) and a 'XLarge' instance (42 core, 270GB RAM). I used the same build and the '2pc_secureml_e10_if_b256_confic.json' configuration for both runs.
+
+It turns out that there is no significant diffrence in either runtime or accuracy when comparing the 'Medium' instance run to the 'XLarge' instace run. Presumably piranha is already using all the resources it can in the 'Medium' instance and the extra RAM and cores of the 'XLarge' instance remain idleing. 
+
+Concerning is that on the paper they show a table where they achieved 97% accuracy in only 13 minutes. Which is a improvement of 2% and much faster than our runtime.
+Obviously my configuration is flawed. In the next experiment I will try a diffrent configuration and compare to this one.
+
+![Alt text](image.png)
+![Alt text](image-1.png)
+
+2. Epochs vs Iterations
+
+I created a new config called '2pc_secureml_ef_i10_b256_confic.json which disabled the custom epochs and enabled custom iterations, setting them to 10.
+
+We can see that we get a massive improvement in our runtime. Where before it took us over an hour to get to epoch 6, we can now complete computation in just under 5 minutes.
+
+This however comes with a big drawback: Our accuracy dropped from 95% at just epoch 6 to just 67% at epoch 10. I belive that the standart number of epochs, if no custom amount is set, is ten but that the standart number of iterations per epoch is far greater than 10. I will test this in the next experiment.
+
+![Alt text](image-2.png)
+![Alt text](image-3.png)
+
+3. Runtime of diffrent Iteration counts
+
+These results are what we would expect. Runtime is slower (still faster than when no custom iterations count was set) but accuracy has improved (but is still lower than in our initial case).
+
+It seems that the higher our accuracy is, the more difficult it is to improve further, which is what we would expect.
+
+Intresstingly it seems that in all cases, our accuracy doesn't much improve after the third epoch.
+
+![Alt text](image-4.png)
+![Alt text](image-5.png)
+
+4. SecureML vs LeNET
+
+Comparing the neural networks SecureML and LeNET, both run with the same parameters on the 2-PC MPC protocol P-SecureML, it is apparent that LeNET performs much worse. Its runtime is over double that of SecureML and its accuracy is less than half that of SecureML. 
+
+![Alt text](image-6.png)
+![Alt text](image-7.png)
+
+5. 26-bit accuracy vs 12-bit accuracy (2 PC)
+
+We can see that the runtime stays the same, no matter the number of bits used for precision and while accuracy is lower in the 12-bit build compared to the 26 bit build, it is not close to the 10% the paper speaks of. 
+
+The paper used P-Falcon, a 3-PC MPC protocol whereas we are using SecureML. A 2-PC protocol. Lets try this experiment again with the 3-PC protocol.
+
+![Alt text](image-8.png)
+![Alt text](image-9.png)
+
+6. 26-bit accuracy vs 12-bit accuracy (3 PC)
+
+The values collected in this run go against what we would expect. Not only does it fail to reproduce the values the paper mentioned but even worse, the two runs are almost idendical. This leads me to believe that the precision bit number may not be parsed correctly when building piranha.
+
+![Alt text](image-10.png)
+![Alt text](image-11.png)
+
+---------------------------------------------------------------------------------------------
+
+#### **Memory Experiments**
