@@ -219,7 +219,7 @@ The following are the questions I'd like to investigate. They allow me to compar
 
 * Can we reproduce the results from Figure 5 (Fixed Point Precision - Accuracy graph)?
 * Does the number of bits used for Fixed Point Precision impact runtime or memory usage?
-* How does memory usage vary from one NN model - MPC protocol pair to the others?
+* How does memory usage and runtime vary from one NN model - MPC protocol pair to the others?
 * Can we reporduce the results from Table 2 (Comparing diffrent NN and MPC protocol combinations)?
 
 ---------------------------------------------------------------------------------------------
@@ -372,6 +372,6 @@ We have performed quite a few runtime experiments now I'd like to do just a few 
 
 I will compare SecureML to LeNET with 12-bit and the 26-bit precision to see if the precision has any effect on memory usage.
 
-![Alt text](Images/image-12.png)
+![Alt text](Images/image-12.png)!
 
 Sadly the results are not impressive not did they arrive as I expected. I expected to get values simmilar to Figure 7 in the paper. Unfortunatly, every single pass in every single epoch returns the same MB amount, irrespective of the amount of bits used for fixed point precision.
