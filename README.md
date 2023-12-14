@@ -16,6 +16,7 @@ Piranha is described in more detail in our [USENIX Security '22 paper](https://e
 
 ### SETTING UP THE PROJECT
 **1. REMOTE INTO SCICORE**
+
 Remote into [SciCORE](https://scicore.unibas.ch/) with your login.
 
 **2. CLONE THE REPOSITORY**
@@ -316,8 +317,8 @@ It turns out that there is no significant diffrence in either runtime or accurac
 Concerning is that on the paper they show a table where they achieved 97% accuracy in only 13 minutes. Which is a improvement of 2% and much faster than our runtime.
 Obviously my configuration is flawed. In the next experiment I will try a diffrent configuration and compare to this one.
 
-![Alt text](images/image.png)
-![Alt text](images/image-1.png)
+![Alt text](Images/image.png)
+![Alt text](Images/image-1.png)
 
 2. Epochs vs Iterations
 
@@ -327,8 +328,8 @@ We can see that we get a massive improvement in our runtime. Where before it too
 
 This however comes with a big drawback: Our accuracy dropped from 95% at just epoch 6 to just 67% at epoch 10. I belive that the standart number of epochs, if no custom amount is set, is ten but that the standart number of iterations per epoch is far greater than 10. I will test this in the next experiment.
 
-![Alt text](images/image-2.png)
-![Alt text](images/image-3.png)
+![Alt text](Images/image-2.png)
+![Alt text](Images/image-3.png)
 
 3. Runtime of diffrent Iteration counts
 
@@ -338,15 +339,15 @@ It seems that the higher our accuracy is, the more difficult it is to improve fu
 
 Intresstingly it seems that in all cases, our accuracy doesn't much improve after the third epoch.
 
-![Alt text](images/image-4.png)
-![Alt text](images/image-5.png)
+![Alt text](Images/image-4.png)
+![Alt text](Images/image-5.png)
 
 4. SecureML vs LeNET
 
 Comparing the neural networks SecureML and LeNET, both run with the same parameters on the 2-PC MPC protocol P-SecureML, it is apparent that LeNET performs much worse. Its runtime is over double that of SecureML and its accuracy is less than half that of SecureML. 
 
-![Alt text](images/image-6.png)
-![Alt text](images/image-7.png)
+![Alt text](Images/image-6.png)
+![Alt text](Images/image-7.png)
 
 5. 26-bit accuracy vs 12-bit accuracy (2 PC)
 
@@ -354,15 +355,15 @@ We can see that the runtime stays the same, no matter the number of bits used fo
 
 The paper used P-Falcon, a 3-PC MPC protocol whereas we are using SecureML. A 2-PC protocol. Lets try this experiment again with the 3-PC protocol.
 
-![Alt text](images/image-8.png)
-![Alt text](images/image-9.png)
+![Alt text](Images/image-8.png)
+![Alt text](Images/image-9.png)
 
 6. 26-bit accuracy vs 12-bit accuracy (3 PC)
 
 The values collected in this run go against what we would expect. Not only does it fail to reproduce the values the paper mentioned but even worse, the two runs are almost idendical. This leads me to believe that the precision bit number may not be parsed correctly when building piranha.
 
-![Alt text](images/image-10.png)
-![Alt text](images/image-11.png)
+![Alt text](Images/image-10.png)
+![Alt text](Images/image-11.png)
 
 ---------------------------------------------------------------------------------------------
 
@@ -371,6 +372,6 @@ We have performed quite a few runtime experiments now I'd like to do just a few 
 
 I will compare SecureML to LeNET with 12-bit and the 26-bit precision to see if the precision has any effect on memory usage.
 
-![Alt text](images/image-12.png)
+![Alt text](Images/image-12.png)
 
 Sadly the results are not impressive not did they arrive as I expected. I expected to get values simmilar to Figure 7 in the paper. Unfortunatly, every single pass in every single epoch returns the same MB amount, irrespective of the amount of bits used for fixed point precision.
