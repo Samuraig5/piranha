@@ -303,7 +303,7 @@ Build Piranha with a fixed point precision of 12, 14, 16, 18, 20, 22, 24 and 26 
 
 ### Analysis
 All the data that was produced, was saved to a excel table together with the name of the config file and important parameter settings it was produced under. 
-This excel file is included with the ADAM handin.
+This excel file is included in the git: `Piranha_Project_Data.xlsx`.
 
 #### **Runtime Experiments**
 In the runtime experiments I want to investigate the runtime behaviour of Piranha. What influences runtime and how does it tradeoff with accuracy? I want to get a feel for the general behaviour so we would be able to select the proper parameters depending on our time and accuracy requirements.
